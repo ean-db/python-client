@@ -146,7 +146,7 @@ def _check_common_success(product_response: ProductResponse):
     assert isinstance(product_response, ProductResponse)
     assert product_response.error is None
     assert product_response.get_error_type() is None
-    assert product_response.balance is 100
+    assert product_response.balance == 100
 
 
 def _check_basic_product(product_response: ProductResponse):

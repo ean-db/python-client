@@ -5,13 +5,32 @@ from eandb.clients.v1 import EandbV1SyncClient, EandbV1AsyncClient
 from eandb.models.v1 import EandbResponse, ErrorType
 
 _MOCK_RESPONSES = {
-    ErrorType.INVALID_BARCODE: (400, {'error': {'code': 400, 'description': 'Invalid barcode: TEST'}}),
-    ErrorType.PRODUCT_NOT_FOUND: (404, {'error': {'code': 404, 'description': 'Product not found: 123'}}),
-    ErrorType.INVALID_JWT: (403, {'error': {'code': 403, 'description': 'JWT is missing or invalid, check Authorization header'}}),
-    ErrorType.ACCOUNT_NOT_CONFIRMED: (403, {'error': {'code': 403, 'description': 'Your account is not confirmed, please check your email for confirmation link'}}),
-    ErrorType.JWT_REVOKED: (403, {'error': {'code': 403, 'description': 'JWT revoked'}}),
-    ErrorType.JWT_EXPIRED: (403, {'error': {'code': 403, 'description': 'JWT expired'}}),
-    ErrorType.EMPTY_BALANCE: (403, {'error': {'code': 403, 'description': 'Your account balance is empty'}})
+    ErrorType.INVALID_BARCODE: (
+        400, {'error': {'code': 400, 'description': 'Invalid barcode: TEST'}}
+    ),
+    ErrorType.PRODUCT_NOT_FOUND: (
+        404, {'error': {'code': 404, 'description': 'Product not found: 123'}}
+    ),
+    ErrorType.INVALID_JWT: (
+        403, {'error': {'code': 403, 'description': 'JWT is missing or invalid, check Authorization header'}}
+    ),
+    ErrorType.ACCOUNT_NOT_CONFIRMED: (
+        403, {
+            'error': {
+                'code': 403,
+                'description': 'Your account is not confirmed, please check your email for confirmation link'
+            }
+        }
+    ),
+    ErrorType.JWT_REVOKED: (
+        403, {'error': {'code': 403, 'description': 'JWT revoked'}}
+    ),
+    ErrorType.JWT_EXPIRED: (
+        403, {'error': {'code': 403, 'description': 'JWT expired'}}
+    ),
+    ErrorType.EMPTY_BALANCE: (
+        403, {'error': {'code': 403, 'description': 'Your account balance is empty'}}
+    )
 }
 
 
@@ -167,7 +186,7 @@ def test_403_jwt_expired_sync(httpx_mock: HTTPXMock):
 
 
 @pytest.mark.asyncio
-async def test_403_jwt_revoked_async(httpx_mock: HTTPXMock):
+async def test_403_jwt_expired_async(httpx_mock: HTTPXMock):
     _set_mock(httpx_mock, ErrorType.JWT_EXPIRED)
 
     async with EandbV1AsyncClient(jwt='TEST') as client:
@@ -186,7 +205,7 @@ def test_403_empty_balance_sync(httpx_mock: HTTPXMock):
 
 
 @pytest.mark.asyncio
-async def test_403_jwt_revoked_async(httpx_mock: HTTPXMock):
+async def test_403_empty_balance_async(httpx_mock: HTTPXMock):
     _set_mock(httpx_mock, ErrorType.EMPTY_BALANCE)
 
     async with EandbV1AsyncClient(jwt='TEST') as client:
