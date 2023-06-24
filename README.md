@@ -1,9 +1,11 @@
-# Python EAN-DB client
+# EAN-DB Python client
 
 This is a Python client for EAN-DB API.
 
 [EAN-DB](https://ean-db.com) is an online API for product info lookups by EAN / UPC / ISBN.
 Product info includes titles in various languages, categories, manufacturer, images and additional metadata.
+
+For more information, please see [API docs](https://ean-db.com/docs) and [Database stats](https://ean-db.com/stats).
 
 ## Installation
 

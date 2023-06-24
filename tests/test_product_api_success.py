@@ -130,6 +130,7 @@ _MOCK_RESPONSES = {
             'metadata': {
                 'musicCD': {
                     'numberOfDiscs': 2,
+                    'testUnknownPropery': 'test',
                     'releasedYear': 2010
                 }
             }
