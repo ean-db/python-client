@@ -31,8 +31,7 @@ class Error(BaseModel):
 
 
 class EandbResponse(BaseModel):
-    balance: Optional[int]
-    error: Optional[Error]
+    error: Optional[Error] = None
 
     def get_error_type(self) -> Optional[ErrorType]:
         if not self.error:
@@ -54,9 +53,9 @@ class Product(BaseModel):
         titles: dict[str, str]
 
     class Manufacturer(BaseModel):
-        id: Optional[str]
+        id: Optional[str] = None
         titles: dict[str, str]
-        wikidataId: Optional[str]
+        wikidataId: Optional[str] = None
 
     class Image(BaseModel):
         url: str
@@ -70,36 +69,36 @@ class Product(BaseModel):
                 names: dict[str, str]
                 type: str
 
-            weightGrams: Optional[int]
-            manufacturerCode: Optional[str]
-            color: Optional[str]
-            materials: Optional[list[str]]
-            contributors: Optional[list[Contributor]]
+            weightGrams: Optional[int] = None
+            manufacturerCode: Optional[str] = None
+            color: Optional[str] = None
+            materials: Optional[list[str]] = None
+            contributors: Optional[list[Contributor]] = None
 
         class Food(BaseModel):
             class Nutriments(BaseModel):
-                fatGrams: Optional[Decimal]
-                proteinsGrams: Optional[Decimal]
-                carbohydratesGrams: Optional[Decimal]
-                energyKCal: Optional[Decimal]
+                fatGrams: Optional[Decimal] = None
+                proteinsGrams: Optional[Decimal] = None
+                carbohydratesGrams: Optional[Decimal] = None
+                energyKCal: Optional[Decimal] = None
 
             nutrimentsPer100Grams: Optional[Nutriments]
 
         class PrintBook(BaseModel):
-            numPages: Optional[int]
-            publishedYear: Optional[int]
-            bisacCodes: Optional[list[str]]
-            bindingType: Optional[str]
+            numPages: Optional[int] = None
+            publishedYear: Optional[int] = None
+            bisacCodes: Optional[list[str]] = None
+            bindingType: Optional[str] = None
 
         class MusicCD(BaseModel):
-            releasedYear: Optional[int]
-            numberOfDiscs: Optional[int]
+            releasedYear: Optional[int] = None
+            numberOfDiscs: Optional[int] = None
 
-        externalIds: Optional[ExternalIds]
-        generic: Optional[Generic]
-        food: Optional[Food]
-        printBook: Optional[PrintBook]
-        musicCD: Optional[MusicCD]
+        externalIds: Optional[ExternalIds] = None
+        generic: Optional[Generic] = None
+        food: Optional[Food] = None
+        printBook: Optional[PrintBook] = None
+        musicCD: Optional[MusicCD] = None
 
     barcode: str
     titles: dict[str, str]
@@ -111,4 +110,5 @@ class Product(BaseModel):
 
 
 class ProductResponse(EandbResponse):
+    balance: int
     product: Product

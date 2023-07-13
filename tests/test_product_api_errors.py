@@ -43,7 +43,6 @@ def _check_common_error(product_response: EandbResponse, status_code: int, error
     assert isinstance(product_response, EandbResponse)
     assert product_response.error.code == status_code
     assert product_response.get_error_type() == error_type
-    assert product_response.balance is None
 
 
 def _check_invalid_barcode(product_response: EandbResponse):
