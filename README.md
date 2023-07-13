@@ -42,6 +42,7 @@ ProductResponse(
             Category(id='855', titles={'en': 'Music & Sound Recordings', ...})
         ],
         manufacturer=Manufacturer(id=None, titles={'de': 'Geffen'}, wikidataId=None),
+        relatedBrands=[],
         images=[Image(url='...')], 
         metadata=Metadata(
             externalIds=None,
