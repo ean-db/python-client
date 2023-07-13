@@ -14,6 +14,7 @@ _MOCK_RESPONSES = {
             },
             'categories': [],
             'manufacturer': None,
+            'relatedBrands': [],
             'images': [],
             'metadata': None
         }
@@ -47,6 +48,13 @@ _MOCK_RESPONSES = {
                 },
                 'wikidataId': 'TEST'
             },
+            'relatedBrands': [{
+                'id': 'related-brand-id',
+                'titles': {
+                    'en': 'Related Brand'
+                },
+                'wikidataId': 'Q202440'
+            }],
             'images': [{
                 'url': 'https://ean-db.com/image.jpg'
             }],
@@ -70,6 +78,7 @@ _MOCK_RESPONSES = {
                     'en': 'Manufacturer'
                 }
             },
+            'relatedBrands': [],
             'images': [],
             'metadata': {
                 'generic': {
@@ -97,6 +106,7 @@ _MOCK_RESPONSES = {
             },
             'categories': [],
             'manufacturer': None,
+            'relatedBrands': [],
             'images': [],
             'metadata': {
                 'generic': {
@@ -126,6 +136,7 @@ _MOCK_RESPONSES = {
             },
             'categories': [],
             'manufacturer': None,
+            'relatedBrands': [],
             'images': [],
             'metadata': {
                 'musicCD': {
@@ -158,6 +169,7 @@ def _check_basic_product(product_response: ProductResponse):
     assert product_response.product.titles == {'en': 'Test'}
     assert product_response.product.categories == []
     assert product_response.product.manufacturer is None
+    assert product_response.product.relatedBrands == []
     assert product_response.product.images == []
     assert product_response.product.metadata is None
 
@@ -165,19 +177,30 @@ def _check_basic_product(product_response: ProductResponse):
 def _check_extended_product(product_response: ProductResponse):
     _check_common_success(product_response)
 
-    assert product_response.product.barcode == '123'
-    assert product_response.product.titles == {'en': 'Test', 'no': 'Tœst'}
-    assert isinstance(product_response.product.categories[0], Product.Category)
-    assert product_response.product.categories[0].id == '3911'
-    assert product_response.product.categories[0].titles == {'en': 'Bath Toys', 'de': 'Bad-Spielzeug'}
-    assert product_response.product.categories[1].id == '543543'
-    assert product_response.product.categories[1].titles == {'en': 'Print Books', 'de': 'Gedruckte Bücher'}
-    assert isinstance(product_response.product.manufacturer, Product.Manufacturer)
-    assert product_response.product.manufacturer.id == 'manufacturer-id'
-    assert product_response.product.manufacturer.titles == {'en': 'Manufacturer', 'no': 'Manufåcturer'}
-    assert product_response.product.manufacturer.wikidataId == 'TEST'
+    product = product_response.product
+
+    assert product.barcode == '123'
+
+    assert product.titles == {'en': 'Test', 'no': 'Tœst'}
+
+    assert isinstance(product.categories[0], Product.Category)
+    assert product.categories[0].id == '3911'
+    assert product.categories[0].titles == {'en': 'Bath Toys', 'de': 'Bad-Spielzeug'}
+    assert product.categories[1].id == '543543'
+    assert product.categories[1].titles == {'en': 'Print Books', 'de': 'Gedruckte Bücher'}
+
+    assert isinstance(product.manufacturer, Product.Manufacturer)
+    assert product.manufacturer.id == 'manufacturer-id'
+    assert product.manufacturer.titles == {'en': 'Manufacturer', 'no': 'Manufåcturer'}
+    assert product.manufacturer.wikidataId == 'TEST'
+
+    assert len(product.relatedBrands) == 1
+    assert isinstance(product.relatedBrands[0], Product.Manufacturer)
+    assert product.relatedBrands[0].id == 'related-brand-id'
+
     assert isinstance(product_response.product.images[0], Product.Image)
     assert product_response.product.images[0].url == 'https://ean-db.com/image.jpg'
+
     assert isinstance(product_response.product.metadata, Product.Metadata)
     assert product_response.product.metadata.generic is None
     assert product_response.product.metadata.food is None

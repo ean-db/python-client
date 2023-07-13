@@ -105,6 +105,7 @@ class Product(BaseModel):
     titles: dict[str, str]
     categories: list[Category]
     manufacturer: Optional[Manufacturer]
+    relatedBrands: list[Manufacturer]
     images: list[Image]
     metadata: Optional[Metadata]
 
