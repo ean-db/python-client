@@ -56,7 +56,8 @@ _MOCK_RESPONSES = {
                 'wikidataId': 'Q202440'
             }],
             'images': [{
-                'url': 'https://ean-db.com/image.jpg'
+                'url': 'https://ean-db.com/image.jpg',
+                'isCatalog': True
             }],
             'metadata': {
                 'externalIds': {
@@ -200,6 +201,7 @@ def _check_extended_product(product_response: ProductResponse):
 
     assert isinstance(product_response.product.images[0], Product.Image)
     assert product_response.product.images[0].url == 'https://ean-db.com/image.jpg'
+    assert product_response.product.images[0].isCatalog is True
 
     assert isinstance(product_response.product.metadata, Product.Metadata)
     assert product_response.product.metadata.generic is None

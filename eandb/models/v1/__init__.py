@@ -59,6 +59,7 @@ class Product(BaseModel):
 
     class Image(BaseModel):
         url: str
+        isCatalog: bool
 
     class Metadata(BaseModel):
         class ExternalIds(BaseModel):
