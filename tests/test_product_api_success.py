@@ -92,7 +92,8 @@ _MOCK_RESPONSES = {
                         'fatGrams': 1.0,
                         'proteinsGrams': 2.0,
                         'carbohydratesGrams': 3.0,
-                        'energyKCal': 4.0
+                        'energyKCal': 4.0,
+                        'calciumMg': 16.0
                     }
                 }
             }
@@ -233,6 +234,10 @@ def _check_product_with_food_metadata(product_response: ProductResponse):
     assert product_response.product.metadata.food.nutrimentsPer100Grams.proteinsGrams == 2.0
     assert product_response.product.metadata.food.nutrimentsPer100Grams.carbohydratesGrams == 3.0
     assert product_response.product.metadata.food.nutrimentsPer100Grams.energyKCal == 4.0
+    assert product_response.product.metadata.food.nutrimentsPer100Grams.cholesterolMg is None
+    assert product_response.product.metadata.food.nutrimentsPer100Grams.sodiumMg is None
+    assert product_response.product.metadata.food.nutrimentsPer100Grams.potassiumMg is None
+    assert product_response.product.metadata.food.nutrimentsPer100Grams.calciumMg == 16.0
 
 
 def _check_product_with_book_metadata(product_response: ProductResponse):

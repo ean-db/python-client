@@ -82,6 +82,10 @@ class Product(BaseModel):
                 proteinsGrams: Optional[Decimal] = None
                 carbohydratesGrams: Optional[Decimal] = None
                 energyKCal: Optional[Decimal] = None
+                cholesterolMg: Optional[Decimal] = None
+                sodiumMg: Optional[Decimal] = None
+                potassiumMg: Optional[Decimal] = None
+                calciumMg: Optional[Decimal] = None
 
             nutrimentsPer100Grams: Optional[Nutriments]
 
