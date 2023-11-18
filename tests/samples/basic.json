@@ -1,0 +1,14 @@
+{
+  "balance": 100,
+  "product": {
+    "barcode": "123",
+    "titles": {
+      "en": "Test"
+    },
+    "categories": [],
+    "manufacturer": null,
+    "relatedBrands": [],
+    "images": [],
+    "metadata": null
+  }
+}

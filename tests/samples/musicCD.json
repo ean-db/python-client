@@ -1,0 +1,20 @@
+{
+  "balance": 100,
+  "product": {
+    "barcode": "123",
+    "titles": {
+      "en": "Test"
+    },
+    "categories": [],
+    "manufacturer": null,
+    "relatedBrands": [],
+    "images": [],
+    "metadata": {
+      "musicCD": {
+        "numberOfDiscs": 2,
+        "testUnknownPropery": "test",
+        "releasedYear": 2010
+      }
+    }
+  }
+}

@@ -4,12 +4,12 @@ from typing import Optional, Type
 
 import httpx
 
-from eandb.models.v1 import ProductResponse, EandbResponse
+from eandb.models.v2 import ProductResponse, EandbResponse
 
 
-class EandbV1AbstractClient(abc.ABC):
+class EandbV2AbstractClient(abc.ABC):
     DEFAULT_BASE_URL = 'https://ean-db.com'
-    PRODUCT_ENDPOINT = '/api/v1/product/{barcode}'
+    PRODUCT_ENDPOINT = '/api/v2/product/{barcode}'
 
     def __init__(self, *, jwt: str = ''):
         if not jwt:
@@ -28,7 +28,7 @@ class EandbV1AbstractClient(abc.ABC):
         response.raise_for_status()
 
 
-class EandbV1SyncClient(EandbV1AbstractClient):
+class EandbV2SyncClient(EandbV2AbstractClient):
     def __init__(self, *, jwt: str = '', **kwargs):
         super().__init__(jwt=jwt)
 
@@ -70,7 +70,7 @@ class EandbV1SyncClient(EandbV1AbstractClient):
         self._client.__exit__(exc_type, exc_value, traceback)
 
 
-class EandbV1AsyncClient(EandbV1AbstractClient):
+class EandbV2AsyncClient(EandbV2AbstractClient):
     def __init__(self, *, jwt: str = '', **kwargs):
         super().__init__(jwt=jwt)
 

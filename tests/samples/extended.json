@@ -1,0 +1,54 @@
+{
+  "balance": 100,
+  "product": {
+    "barcode": "123",
+    "titles": {
+      "en": "Test",
+      "no": "Tœst"
+    },
+    "categories": [
+      {
+        "id": "3911",
+        "titles": {
+          "en": "Bath Toys",
+          "de": "Bad-Spielzeug"
+        }
+      },
+      {
+        "id": "543543",
+        "titles": {
+          "en": "Print Books",
+          "de": "Gedruckte Bücher"
+        }
+      }
+    ],
+    "manufacturer": {
+      "id": "manufacturer-id",
+      "titles": {
+        "en": "Manufacturer",
+        "no": "Manufåcturer"
+      },
+      "wikidataId": "TEST"
+    },
+    "relatedBrands": [
+      {
+        "id": "related-brand-id",
+        "titles": {
+          "en": "Related Brand"
+        },
+        "wikidataId": "Q202440"
+      }
+    ],
+    "images": [
+      {
+        "url": "https://ean-db.com/image.jpg",
+        "isCatalog": true
+      }
+    ],
+    "metadata": {
+      "externalIds": {
+        "amazonAsin": "TEST"
+      }
+    }
+  }
+}

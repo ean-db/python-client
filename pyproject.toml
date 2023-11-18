@@ -20,6 +20,7 @@ pydantic = ">=1.9.0"
 [tool.poetry.group.dev.dependencies]
 pytest = "*"
 pytest-httpx = "*"
+pytest-asyncio = "*"
 flake8 = "*"
 
 [build-system]

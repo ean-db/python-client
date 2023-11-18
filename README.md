@@ -18,18 +18,18 @@ pip install eandb
 ### Asynchronous client
 
 ```pycon
->>> from eandb.clients.v1 import EandbV1AsyncClient
+>>> from eandb.clients.v2 import EandbV2AsyncClient
 
->>> eandb_client = EandbV1AsyncClient(jwt='YOUR_JWT_GOES_HERE')
+>>> eandb_client = EandbV2AsyncClient(jwt='YOUR_JWT_GOES_HERE')
 >>> response = await eandb_client.get_product('0016065024615')
 ```
 
 ### Synchronous client
 
 ```pycon
->>> from eandb.clients.v1 import EandbV1SyncClient
+>>> from eandb.clients.v2 import EandbV2SyncClient
 
->>> eandb_client = EandbV1SyncClient(jwt='YOUR_JWT_GOES_HERE')
+>>> eandb_client = EandbV2SyncClient(jwt='YOUR_JWT_GOES_HERE')
 >>> response = eandb_client.get_product('0016065024615')
 >>> response
 
@@ -47,10 +47,10 @@ ProductResponse(
         metadata=Metadata(
             externalIds=None,
             generic=Generic(
-                weightGrams=None,
+                weight=None,
                 manufacturerCode=None,
                 color=None,
-                materials=None,
+                ingredients=None,
                 contributors=[Contributor(names={'en': "Guns N' Roses"}, type='artist')]
             ),
             food=None,

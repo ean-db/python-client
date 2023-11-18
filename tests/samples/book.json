@@ -1,0 +1,46 @@
+{
+  "balance": 100,
+  "product": {
+    "barcode": "123",
+    "titles": {
+      "en": "Test"
+    },
+    "categories": [],
+    "manufacturer": null,
+    "relatedBrands": [],
+    "images": [],
+    "metadata": {
+      "generic": {
+        "ingredients": [
+          {
+            "groupName": null,
+            "ingredientsGroup": [
+              {
+                "id": "paper",
+                "originalNames": {
+                  "en": "Paper"
+                }
+              }
+            ]
+          }
+        ],
+        "contributors": [
+          {
+            "names": {
+              "en": "John Smith"
+            },
+            "type": "author"
+          }
+        ]
+      },
+      "printBook": {
+        "numPages": 123,
+        "publishedYear": 2010,
+        "bisacCodes": [
+          "TEST"
+        ],
+        "bindingType": "paperback"
+      }
+    }
+  }
+}

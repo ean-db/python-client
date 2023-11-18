@@ -70,10 +70,33 @@ class Product(BaseModel):
                 names: dict[str, str]
                 type: str
 
-            weightGrams: Optional[int] = None
+            class Weight(BaseModel):
+                type: str
+                value: Decimal
+                unit: str
+
+            class Ingredients(BaseModel):
+                class Ingredient(BaseModel):
+                    class Amount(BaseModel):
+                        value: Decimal
+                        unit: str
+
+                    originalNames: Optional[dict[str, str]] = None
+                    id: Optional[str] = None
+                    canonicalNames: Optional[dict[str, str]] = None
+                    properties: Optional[dict[str, list[str]]] = None
+                    amount: dict[str, Amount] = None
+                    isVegan: Optional[bool] = None
+                    isVegetarian: Optional[bool] = None
+                    subIngredients: Optional[list['Product.Metadata.Generic.Ingredients.Ingredient']] = None
+
+                groupName: Optional[str]
+                ingredientsGroup: list[Ingredient]
+
+            weight: Optional[list[Weight]] = None
             manufacturerCode: Optional[str] = None
             color: Optional[str] = None
-            materials: Optional[list[str]] = None
+            ingredients: Optional[list[Ingredients]] = None
             contributors: Optional[list[Contributor]] = None
 
         class Food(BaseModel):

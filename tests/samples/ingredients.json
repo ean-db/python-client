@@ -1,0 +1,107 @@
+{
+  "balance": 100,
+  "product": {
+    "barcode": "123",
+    "titles": {
+      "ru": "Ice Tea"
+    },
+    "categories": [
+      {
+        "id": "2073",
+        "titles": {
+          "en": "Tea & Infusions",
+          "ru": "Чаи и чайные смеси",
+          "es": "Té e infusiones",
+          "nl": "Thee en aftreksels",
+          "de": "Tees & Aufgüsse",
+          "it": "Tè e infusi",
+          "fr": "Thé et infusions"
+        }
+      }
+    ],
+    "manufacturer": {
+      "id": "lipton",
+      "titles": {
+        "ar": "ليبتون",
+        "en": "Lipton",
+        "he": "ליפטון",
+        "hy": "Լիպտոն",
+        "ja": "リプトン",
+        "kk": "Липтон",
+        "ko": "립톤",
+        "zh": "立顿"
+      },
+      "wikidataId": "Q874407"
+    },
+    "relatedBrands": [],
+    "images": [
+      {
+        "url": "https://ean-db.b-cdn.net/some_image.jpg",
+        "isCatalog": true
+      }
+    ],
+    "metadata": {
+      "generic": {
+        "ingredients": [
+          {
+            "groupName": null,
+            "ingredientsGroup": [
+              {
+                "originalNames": {
+                  "en": "Drinking Water"
+                },
+                "subIngredients": []
+              },
+              {
+                "originalNames": {
+                  "en": "Sugar"
+                },
+                "id": "sugar",
+                "subIngredients": [],
+                "amount": {
+                  "equals": {
+                    "value": 2.2,
+                    "unit": "percent"
+                  }
+                }
+              },
+              {
+                "originalNames": {
+                  "en": "Acidity Regulators"
+                },
+                "subIngredients": [
+                  {
+                    "originalNames": {
+                      "en": "Citric Acid"
+                    },
+                    "id": "e330",
+                    "isVegan": true,
+                    "isVegetarian": true,
+                    "subIngredients": []
+                  },
+                  {
+                    "originalNames": {
+                      "en": "Malic Acid"
+                    },
+                    "id": "e296",
+                    "isVegan": true,
+                    "isVegetarian": true,
+                    "subIngredients": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "food": {
+        "nutrimentsPer100Grams": {
+          "fatGrams": 0.0,
+          "proteinsGrams": 0.0,
+          "carbohydratesGrams": 6.5,
+          "energyKCal": 27.0
+        }
+      }
+    }
+  }
+}

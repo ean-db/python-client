@@ -1,154 +1,19 @@
+import json
+from decimal import Decimal
+
 import pytest
 from pytest_httpx import HTTPXMock
 
-from eandb.clients.v1 import EandbV1SyncClient, EandbV1AsyncClient
-from eandb.models.v1 import ProductResponse, Product
+from eandb.clients.v2 import EandbV2SyncClient, EandbV2AsyncClient
+from eandb.models.v2 import ProductResponse, Product
 
 _MOCK_RESPONSES = {
-    'BASIC_PRODUCT': {
-        'balance': 100,
-        'product': {
-            'barcode': '123',
-            'titles': {
-                'en': 'Test'
-            },
-            'categories': [],
-            'manufacturer': None,
-            'relatedBrands': [],
-            'images': [],
-            'metadata': None
-        }
-    },
-    'EXTENDED_PRODUCT': {
-        'balance': 100,
-        'product': {
-            'barcode': '123',
-            'titles': {
-                'en': 'Test',
-                'no': 'Tœst'
-            },
-            'categories': [{
-                'id': '3911',
-                'titles': {
-                    'en': 'Bath Toys',
-                    'de': 'Bad-Spielzeug'
-                }
-            }, {
-                'id': '543543',
-                'titles': {
-                    'en': 'Print Books',
-                    'de': 'Gedruckte Bücher'
-                }
-            }],
-            'manufacturer': {
-                'id': 'manufacturer-id',
-                'titles': {
-                    'en': 'Manufacturer',
-                    'no': 'Manufåcturer'
-                },
-                'wikidataId': 'TEST'
-            },
-            'relatedBrands': [{
-                'id': 'related-brand-id',
-                'titles': {
-                    'en': 'Related Brand'
-                },
-                'wikidataId': 'Q202440'
-            }],
-            'images': [{
-                'url': 'https://ean-db.com/image.jpg',
-                'isCatalog': True
-            }],
-            'metadata': {
-                'externalIds': {
-                    'amazonAsin': 'TEST'
-                }
-            }
-        }
-    },
-    'PRODUCT_WITH_FOOD_METADATA': {
-        'balance': 100,
-        'product': {
-            'barcode': '123',
-            'titles': {
-                'en': 'Test'
-            },
-            'categories': [],
-            'manufacturer': {
-                'titles': {
-                    'en': 'Manufacturer'
-                }
-            },
-            'relatedBrands': [],
-            'images': [],
-            'metadata': {
-                'generic': {
-                    'weightGrams': 100,
-                    'manufacturerCode': 'TEST',
-                    'color': 'blue'
-                },
-                'food': {
-                    'nutrimentsPer100Grams': {
-                        'fatGrams': 1.0,
-                        'proteinsGrams': 2.0,
-                        'carbohydratesGrams': 3.0,
-                        'energyKCal': 4.0,
-                        'calciumMg': 16.0
-                    }
-                }
-            }
-        }
-    },
-    'PRODUCT_WITH_BOOK_METADATA': {
-        'balance': 100,
-        'product': {
-            'barcode': '123',
-            'titles': {
-                'en': 'Test'
-            },
-            'categories': [],
-            'manufacturer': None,
-            'relatedBrands': [],
-            'images': [],
-            'metadata': {
-                'generic': {
-                    'materials': ['paper'],
-                    'contributors': [{
-                        'names': {
-                            'en': 'John Smith'
-                        },
-                        'type': 'author'
-                    }]
-                },
-                'printBook': {
-                    'numPages': 123,
-                    'publishedYear': 2010,
-                    'bisacCodes': ['TEST'],
-                    'bindingType': 'paperback'
-                }
-            }
-        }
-    },
-    'PRODUCT_WITH_MUSIC_CD_METADATA': {
-        'balance': 100,
-        'product': {
-            'barcode': '123',
-            'titles': {
-                'en': 'Test'
-            },
-            'categories': [],
-            'manufacturer': None,
-            'relatedBrands': [],
-            'images': [],
-            'metadata': {
-                'musicCD': {
-                    'numberOfDiscs': 2,
-                    'testUnknownPropery': 'test',
-                    'releasedYear': 2010
-                }
-            }
-        }
-    }
+    'BASIC_PRODUCT': json.load(open('tests/samples/basic.json')),
+    'EXTENDED_PRODUCT': json.load(open('tests/samples/extended.json')),
+    'PRODUCT_WITH_FOOD_METADATA': json.load(open('tests/samples/food.json')),
+    'PRODUCT_WITH_BOOK_METADATA': json.load(open('tests/samples/book.json')),
+    'PRODUCT_WITH_MUSIC_CD_METADATA': json.load(open('tests/samples/musicCD.json')),
+    'PRODUCT_WITH_INGREDIENTS_METADATA': json.load(open('tests/samples/ingredients.json'))
 }
 
 
@@ -225,7 +90,9 @@ def _check_product_with_food_metadata(product_response: ProductResponse):
     assert product_response.product.metadata.printBook is None
     assert product_response.product.metadata.musicCD is None
     assert isinstance(product_response.product.metadata.generic, Product.Metadata.Generic)
-    assert product_response.product.metadata.generic.weightGrams == 100
+    assert product_response.product.metadata.generic.weight[0].type == 'unknown'
+    assert product_response.product.metadata.generic.weight[0].value == 100
+    assert product_response.product.metadata.generic.weight[0].unit == 'grams'
     assert product_response.product.metadata.generic.manufacturerCode == 'TEST'
     assert product_response.product.metadata.generic.color == 'blue'
     assert isinstance(product_response.product.metadata.food, Product.Metadata.Food)
@@ -248,7 +115,9 @@ def _check_product_with_book_metadata(product_response: ProductResponse):
     assert product_response.product.metadata.food is None
     assert product_response.product.metadata.musicCD is None
     assert isinstance(product_response.product.metadata.generic, Product.Metadata.Generic)
-    assert product_response.product.metadata.generic.materials == ['paper']
+    assert product_response.product.metadata.generic.ingredients[0].groupName is None
+    assert product_response.product.metadata.generic.ingredients[0].ingredientsGroup[0].id == 'paper'
+    assert product_response.product.metadata.generic.ingredients[0].ingredientsGroup[0].originalNames == {'en': 'Paper'}
     assert isinstance(product_response.product.metadata.generic.contributors[0], Product.Metadata.Generic.Contributor)
     assert product_response.product.metadata.generic.contributors[0].names == {'en': 'John Smith'}
     assert product_response.product.metadata.generic.contributors[0].type == 'author'
@@ -272,15 +141,37 @@ def _check_product_with_music_cd_metadata(product_response: ProductResponse):
     assert product_response.product.metadata.musicCD.releasedYear == 2010
 
 
+def _check_product_with_ingredients_metadata(product_response: ProductResponse):
+    _check_common_success(product_response)
+
+    assert isinstance(product_response.product.metadata.generic.ingredients[0], Product.Metadata.Generic.Ingredients)
+
+    ingredients = product_response.product.metadata.generic.ingredients[0]
+
+    assert ingredients.groupName is None
+    assert len(ingredients.ingredientsGroup) == 3
+    assert ingredients.ingredientsGroup[0].id is None
+    assert ingredients.ingredientsGroup[0].originalNames == {'en': 'Drinking Water'}
+    assert ingredients.ingredientsGroup[1].id == 'sugar'
+    assert ingredients.ingredientsGroup[1].originalNames == {'en': 'Sugar'}
+    assert ingredients.ingredientsGroup[1].amount['equals'].value == Decimal('2.2')
+    assert ingredients.ingredientsGroup[1].amount['equals'].unit == 'percent'
+    assert ingredients.ingredientsGroup[2].originalNames == {'en': 'Acidity Regulators'}
+    assert ingredients.ingredientsGroup[2].subIngredients[0].id == 'e330'
+    assert ingredients.ingredientsGroup[2].subIngredients[0].isVegan
+    assert ingredients.ingredientsGroup[2].subIngredients[0].isVegetarian
+    assert ingredients.ingredientsGroup[2].subIngredients[0].originalNames == {'en': 'Citric Acid'}
+
+
 def test_basic_product_sync(httpx_mock: HTTPXMock):
     _set_mock(httpx_mock, 'BASIC_PRODUCT')
 
-    with EandbV1SyncClient(jwt='TEST') as client:
+    with EandbV2SyncClient(jwt='TEST') as client:
         product_response = client.get_product('123')
 
     request = httpx_mock.get_request()
 
-    assert request.url == 'https://ean-db.com/api/v1/product/123'
+    assert request.url == 'https://ean-db.com/api/v2/product/123'
     assert request.headers['Accept'] == 'application/json'
     assert request.headers['Authorization'] == 'Bearer TEST'
 
@@ -291,12 +182,12 @@ def test_basic_product_sync(httpx_mock: HTTPXMock):
 async def test_basic_product_async(httpx_mock: HTTPXMock):
     _set_mock(httpx_mock, 'BASIC_PRODUCT')
 
-    async with EandbV1AsyncClient(jwt='TEST') as client:
+    async with EandbV2AsyncClient(jwt='TEST') as client:
         product_response = await client.get_product('123')
 
     request = httpx_mock.get_request()
 
-    assert request.url == 'https://ean-db.com/api/v1/product/123'
+    assert request.url == 'https://ean-db.com/api/v2/product/123'
     assert request.headers['Accept'] == 'application/json'
     assert request.headers['Authorization'] == 'Bearer TEST'
 
@@ -306,7 +197,7 @@ async def test_basic_product_async(httpx_mock: HTTPXMock):
 def test_extended_product_sync(httpx_mock: HTTPXMock):
     _set_mock(httpx_mock, 'EXTENDED_PRODUCT')
 
-    with EandbV1SyncClient(jwt='TEST') as client:
+    with EandbV2SyncClient(jwt='TEST') as client:
         product_response = client.get_product('123')
 
     _check_extended_product(product_response)
@@ -316,7 +207,7 @@ def test_extended_product_sync(httpx_mock: HTTPXMock):
 async def test_extended_product_async(httpx_mock: HTTPXMock):
     _set_mock(httpx_mock, 'EXTENDED_PRODUCT')
 
-    async with EandbV1AsyncClient(jwt='TEST') as client:
+    async with EandbV2AsyncClient(jwt='TEST') as client:
         product_response = await client.get_product('123')
 
     _check_extended_product(product_response)
@@ -325,7 +216,7 @@ async def test_extended_product_async(httpx_mock: HTTPXMock):
 def test_product_with_food_metadata_sync(httpx_mock: HTTPXMock):
     _set_mock(httpx_mock, 'PRODUCT_WITH_FOOD_METADATA')
 
-    with EandbV1SyncClient(jwt='TEST') as client:
+    with EandbV2SyncClient(jwt='TEST') as client:
         product_response = client.get_product('123')
 
     _check_product_with_food_metadata(product_response)
@@ -335,7 +226,7 @@ def test_product_with_food_metadata_sync(httpx_mock: HTTPXMock):
 async def test_product_with_food_metadata_async(httpx_mock: HTTPXMock):
     _set_mock(httpx_mock, 'PRODUCT_WITH_FOOD_METADATA')
 
-    async with EandbV1AsyncClient(jwt='TEST') as client:
+    async with EandbV2AsyncClient(jwt='TEST') as client:
         product_response = await client.get_product('123')
 
     _check_product_with_food_metadata(product_response)
@@ -344,7 +235,7 @@ async def test_product_with_food_metadata_async(httpx_mock: HTTPXMock):
 def test_product_with_book_metadata_sync(httpx_mock: HTTPXMock):
     _set_mock(httpx_mock, 'PRODUCT_WITH_BOOK_METADATA')
 
-    with EandbV1SyncClient(jwt='TEST') as client:
+    with EandbV2SyncClient(jwt='TEST') as client:
         product_response = client.get_product('123')
 
     _check_product_with_book_metadata(product_response)
@@ -354,7 +245,7 @@ def test_product_with_book_metadata_sync(httpx_mock: HTTPXMock):
 async def test_product_with_book_metadata_async(httpx_mock: HTTPXMock):
     _set_mock(httpx_mock, 'PRODUCT_WITH_BOOK_METADATA')
 
-    async with EandbV1AsyncClient(jwt='TEST') as client:
+    async with EandbV2AsyncClient(jwt='TEST') as client:
         product_response = await client.get_product('123')
 
     _check_product_with_book_metadata(product_response)
@@ -363,7 +254,7 @@ async def test_product_with_book_metadata_async(httpx_mock: HTTPXMock):
 def test_product_with_music_cd_metadata_sync(httpx_mock: HTTPXMock):
     _set_mock(httpx_mock, 'PRODUCT_WITH_MUSIC_CD_METADATA')
 
-    with EandbV1SyncClient(jwt='TEST') as client:
+    with EandbV2SyncClient(jwt='TEST') as client:
         product_response = client.get_product('123')
 
     _check_product_with_music_cd_metadata(product_response)
@@ -373,7 +264,26 @@ def test_product_with_music_cd_metadata_sync(httpx_mock: HTTPXMock):
 async def test_product_with_music_cd_metadata_async(httpx_mock: HTTPXMock):
     _set_mock(httpx_mock, 'PRODUCT_WITH_MUSIC_CD_METADATA')
 
-    async with EandbV1AsyncClient(jwt='TEST') as client:
+    async with EandbV2AsyncClient(jwt='TEST') as client:
         product_response = await client.get_product('123')
 
     _check_product_with_music_cd_metadata(product_response)
+
+
+def test_product_with_ingredients_metadata_sync(httpx_mock: HTTPXMock):
+    _set_mock(httpx_mock, 'PRODUCT_WITH_INGREDIENTS_METADATA')
+
+    with EandbV2SyncClient(jwt='TEST') as client:
+        product_response = client.get_product('123')
+
+    _check_product_with_ingredients_metadata(product_response)
+
+
+@pytest.mark.asyncio
+async def test_product_with_ingredients_metadata_async(httpx_mock: HTTPXMock):
+    _set_mock(httpx_mock, 'PRODUCT_WITH_INGREDIENTS_METADATA')
+
+    async with EandbV2AsyncClient(jwt='TEST') as client:
+        product_response = await client.get_product('123')
+
+    _check_product_with_ingredients_metadata(product_response)

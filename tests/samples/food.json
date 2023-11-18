@@ -1,0 +1,39 @@
+{
+  "balance": 100,
+  "product": {
+    "barcode": "123",
+    "titles": {
+      "en": "Test"
+    },
+    "categories": [],
+    "manufacturer": {
+      "titles": {
+        "en": "Manufacturer"
+      }
+    },
+    "relatedBrands": [],
+    "images": [],
+    "metadata": {
+      "generic": {
+        "weight": [
+          {
+            "type": "unknown",
+            "value": 100,
+            "unit": "grams"
+          }
+        ],
+        "manufacturerCode": "TEST",
+        "color": "blue"
+      },
+      "food": {
+        "nutrimentsPer100Grams": {
+          "fatGrams": 1.0,
+          "proteinsGrams": 2.0,
+          "carbohydratesGrams": 3.0,
+          "energyKCal": 4.0,
+          "calciumMg": 16.0
+        }
+      }
+    }
+  }
+}
