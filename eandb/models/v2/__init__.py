@@ -47,6 +47,23 @@ class EandbResponse(BaseModel):
         return None
 
 
+class Amount(BaseModel):
+    class AmountValue(BaseModel):
+        value: Decimal
+        unit: str
+
+    equals: Optional[AmountValue] = None
+    greaterThan: Optional[AmountValue] = None
+    lessThan: Optional[AmountValue] = None
+
+
+class DimensionsType(BaseModel):
+    width: Optional[Amount] = None
+    height: Optional[Amount] = None
+    length: Optional[Amount] = None
+    depth: Optional[Amount] = None
+
+
 class Product(BaseModel):
     class Category(BaseModel):
         id: str
@@ -71,21 +88,21 @@ class Product(BaseModel):
                 type: str
 
             class Weight(BaseModel):
-                type: str
-                value: Decimal
-                unit: str
+                net: Optional[Amount] = None
+                gross: Optional[Amount] = None
+                unknown: Optional[Amount] = None
+
+            class Dimensions(BaseModel):
+                product: Optional[DimensionsType] = None
+                packaging: Optional[DimensionsType] = None
 
             class Ingredients(BaseModel):
                 class Ingredient(BaseModel):
-                    class Amount(BaseModel):
-                        value: Decimal
-                        unit: str
-
                     originalNames: Optional[dict[str, str]] = None
                     id: Optional[str] = None
                     canonicalNames: Optional[dict[str, str]] = None
                     properties: Optional[dict[str, list[str]]] = None
-                    amount: dict[str, Amount] = None
+                    amount: Optional[Amount] = None
                     isVegan: Optional[bool] = None
                     isVegetarian: Optional[bool] = None
                     subIngredients: Optional[list['Product.Metadata.Generic.Ingredients.Ingredient']] = None
@@ -93,7 +110,9 @@ class Product(BaseModel):
                 groupName: Optional[str]
                 ingredientsGroup: list[Ingredient]
 
-            weight: Optional[list[Weight]] = None
+            weight: Optional[Weight] = None
+            dimensions: Optional[Dimensions] = None
+            volume: Optional[Amount] = None
             manufacturerCode: Optional[str] = None
             color: Optional[str] = None
             ingredients: Optional[list[Ingredients]] = None
@@ -101,14 +120,14 @@ class Product(BaseModel):
 
         class Food(BaseModel):
             class Nutriments(BaseModel):
-                fatGrams: Optional[Decimal] = None
-                proteinsGrams: Optional[Decimal] = None
-                carbohydratesGrams: Optional[Decimal] = None
-                energyKCal: Optional[Decimal] = None
-                cholesterolMg: Optional[Decimal] = None
-                sodiumMg: Optional[Decimal] = None
-                potassiumMg: Optional[Decimal] = None
-                calciumMg: Optional[Decimal] = None
+                fat: Optional[Amount] = None
+                proteins: Optional[Amount] = None
+                carbohydrates: Optional[Amount] = None
+                energy: Optional[Amount] = None
+                cholesterol: Optional[Amount] = None
+                sodium: Optional[Amount] = None
+                potassium: Optional[Amount] = None
+                calcium: Optional[Amount] = None
 
             nutrimentsPer100Grams: Optional[Nutriments]
 

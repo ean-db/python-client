@@ -20,10 +20,10 @@ class EandbV2AbstractClient(abc.ABC):
     @staticmethod
     def _process_product_response(response: httpx.Response) -> ProductResponse | EandbResponse:
         if response.status_code == httpx.codes.OK:
-            return ProductResponse.parse_obj(response.json())
+            return ProductResponse.model_validate(response.json())
 
         if response.status_code in (httpx.codes.NOT_FOUND, httpx.codes.FORBIDDEN, httpx.codes.BAD_REQUEST):
-            return EandbResponse.parse_obj(response.json())
+            return EandbResponse.model_validate(response.json())
 
         response.raise_for_status()
 

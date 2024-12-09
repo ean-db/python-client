@@ -96,10 +96,30 @@
       },
       "food": {
         "nutrimentsPer100Grams": {
-          "fatGrams": 0.0,
-          "proteinsGrams": 0.0,
-          "carbohydratesGrams": 6.5,
-          "energyKCal": 27.0
+          "fat": {
+            "equals": {
+              "value": 0.0,
+              "unit": "grams"
+            }
+          },
+          "proteins": {
+            "equals": {
+              "value": 0.0,
+              "unit": "grams"
+            }
+          },
+          "carbohydrates": {
+            "equals": {
+              "value": 6.5,
+              "unit": "grams"
+            }
+          },
+          "energy": {
+            "equals": {
+              "value": 27.0,
+              "unit": "kcal"
+            }
+          }
         }
       }
     }

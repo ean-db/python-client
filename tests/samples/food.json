@@ -15,23 +15,49 @@
     "images": [],
     "metadata": {
       "generic": {
-        "weight": [
-          {
-            "type": "unknown",
-            "value": 100,
-            "unit": "grams"
+        "weight": {
+          "unknown": {
+            "equals": {
+              "value": 100,
+              "unit": "grams"
+            }
           }
-        ],
+        },
         "manufacturerCode": "TEST",
         "color": "blue"
       },
       "food": {
         "nutrimentsPer100Grams": {
-          "fatGrams": 1.0,
-          "proteinsGrams": 2.0,
-          "carbohydratesGrams": 3.0,
-          "energyKCal": 4.0,
-          "calciumMg": 16.0
+          "fat": {
+            "equals": {
+              "value": 1.0,
+              "unit": "grams"
+            }
+          },
+          "proteins": {
+            "equals": {
+              "value": 2.0,
+              "unit": "grams"
+            }
+          },
+          "carbohydrates": {
+            "equals": {
+              "value": 3.0,
+              "unit": "grams"
+            }
+          },
+          "energy": {
+            "equals": {
+              "value": 4.0,
+              "unit": "kcal"
+            }
+          },
+          "calcium": {
+            "equals": {
+              "value": 16.0,
+              "unit": "mg"
+            }
+          }
         }
       }
     }

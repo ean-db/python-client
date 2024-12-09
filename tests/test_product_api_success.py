@@ -90,21 +90,21 @@ def _check_product_with_food_metadata(product_response: ProductResponse):
     assert product_response.product.metadata.printBook is None
     assert product_response.product.metadata.musicCD is None
     assert isinstance(product_response.product.metadata.generic, Product.Metadata.Generic)
-    assert product_response.product.metadata.generic.weight[0].type == 'unknown'
-    assert product_response.product.metadata.generic.weight[0].value == 100
-    assert product_response.product.metadata.generic.weight[0].unit == 'grams'
+    assert product_response.product.metadata.generic.weight.unknown is not None
+    assert product_response.product.metadata.generic.weight.unknown.equals.value == 100
+    assert product_response.product.metadata.generic.weight.unknown.equals.unit == 'grams'
     assert product_response.product.metadata.generic.manufacturerCode == 'TEST'
     assert product_response.product.metadata.generic.color == 'blue'
     assert isinstance(product_response.product.metadata.food, Product.Metadata.Food)
     assert isinstance(product_response.product.metadata.food.nutrimentsPer100Grams, Product.Metadata.Food.Nutriments)
-    assert product_response.product.metadata.food.nutrimentsPer100Grams.fatGrams == 1.0
-    assert product_response.product.metadata.food.nutrimentsPer100Grams.proteinsGrams == 2.0
-    assert product_response.product.metadata.food.nutrimentsPer100Grams.carbohydratesGrams == 3.0
-    assert product_response.product.metadata.food.nutrimentsPer100Grams.energyKCal == 4.0
-    assert product_response.product.metadata.food.nutrimentsPer100Grams.cholesterolMg is None
-    assert product_response.product.metadata.food.nutrimentsPer100Grams.sodiumMg is None
-    assert product_response.product.metadata.food.nutrimentsPer100Grams.potassiumMg is None
-    assert product_response.product.metadata.food.nutrimentsPer100Grams.calciumMg == 16.0
+    assert product_response.product.metadata.food.nutrimentsPer100Grams.fat.equals.value == 1.0
+    assert product_response.product.metadata.food.nutrimentsPer100Grams.proteins.equals.value == 2.0
+    assert product_response.product.metadata.food.nutrimentsPer100Grams.carbohydrates.equals.value == 3.0
+    assert product_response.product.metadata.food.nutrimentsPer100Grams.energy.equals.value == 4.0
+    assert product_response.product.metadata.food.nutrimentsPer100Grams.cholesterol is None
+    assert product_response.product.metadata.food.nutrimentsPer100Grams.sodium is None
+    assert product_response.product.metadata.food.nutrimentsPer100Grams.potassium is None
+    assert product_response.product.metadata.food.nutrimentsPer100Grams.calcium.equals.value == 16.0
 
 
 def _check_product_with_book_metadata(product_response: ProductResponse):
@@ -154,8 +154,8 @@ def _check_product_with_ingredients_metadata(product_response: ProductResponse):
     assert ingredients.ingredientsGroup[0].originalNames == {'en': 'Drinking Water'}
     assert ingredients.ingredientsGroup[1].id == 'sugar'
     assert ingredients.ingredientsGroup[1].originalNames == {'en': 'Sugar'}
-    assert ingredients.ingredientsGroup[1].amount['equals'].value == Decimal('2.2')
-    assert ingredients.ingredientsGroup[1].amount['equals'].unit == 'percent'
+    assert ingredients.ingredientsGroup[1].amount.equals.value == Decimal('2.2')
+    assert ingredients.ingredientsGroup[1].amount.equals.unit == 'percent'
     assert ingredients.ingredientsGroup[2].originalNames == {'en': 'Acidity Regulators'}
     assert ingredients.ingredientsGroup[2].subIngredients[0].id == 'e330'
     assert ingredients.ingredientsGroup[2].subIngredients[0].isVegan
