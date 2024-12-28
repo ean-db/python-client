@@ -12,8 +12,10 @@
     "metadata": {
       "musicCD": {
         "numberOfDiscs": 2,
-        "testUnknownPropery": "test",
-        "releasedYear": 2010
+        "testUnknownPropery": "test"
+      },
+      "media": {
+        "publicationYear": 2010
       }
     }
   }

@@ -35,11 +35,13 @@
       },
       "printBook": {
         "numPages": 123,
-        "publishedYear": 2010,
         "bisacCodes": [
           "TEST"
         ],
         "bindingType": "paperback"
+      },
+      "media": {
+        "publicationYear": 2010
       }
     }
   }

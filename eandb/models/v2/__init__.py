@@ -133,19 +133,21 @@ class Product(BaseModel):
 
         class PrintBook(BaseModel):
             numPages: Optional[int] = None
-            publishedYear: Optional[int] = None
             bisacCodes: Optional[list[str]] = None
             bindingType: Optional[str] = None
 
         class MusicCD(BaseModel):
-            releasedYear: Optional[int] = None
             numberOfDiscs: Optional[int] = None
+
+        class Media(BaseModel):
+            publicationYear: Optional[int] = None
 
         externalIds: Optional[ExternalIds] = None
         generic: Optional[Generic] = None
         food: Optional[Food] = None
         printBook: Optional[PrintBook] = None
         musicCD: Optional[MusicCD] = None
+        media: Optional[Media] = None
 
     barcode: str
     titles: dict[str, str]

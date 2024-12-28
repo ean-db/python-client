@@ -123,9 +123,9 @@ def _check_product_with_book_metadata(product_response: ProductResponse):
     assert product_response.product.metadata.generic.contributors[0].type == 'author'
     assert isinstance(product_response.product.metadata.printBook, Product.Metadata.PrintBook)
     assert product_response.product.metadata.printBook.numPages == 123
-    assert product_response.product.metadata.printBook.publishedYear == 2010
     assert product_response.product.metadata.printBook.bisacCodes == ['TEST']
     assert product_response.product.metadata.printBook.bindingType == 'paperback'
+    assert product_response.product.metadata.media.publicationYear == 2010
 
 
 def _check_product_with_music_cd_metadata(product_response: ProductResponse):
@@ -138,7 +138,7 @@ def _check_product_with_music_cd_metadata(product_response: ProductResponse):
     assert product_response.product.metadata.printBook is None
     assert isinstance(product_response.product.metadata.musicCD, Product.Metadata.MusicCD)
     assert product_response.product.metadata.musicCD.numberOfDiscs == 2
-    assert product_response.product.metadata.musicCD.releasedYear == 2010
+    assert product_response.product.metadata.media.publicationYear == 2010
 
 
 def _check_product_with_ingredients_metadata(product_response: ProductResponse):
