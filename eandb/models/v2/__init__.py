@@ -114,7 +114,7 @@ class Product(BaseModel):
             dimensions: Optional[Dimensions] = None
             volume: Optional[Amount] = None
             manufacturerCode: Optional[str] = None
-            color: Optional[str] = None
+            colors: Optional[list[str]] = None
             ingredients: Optional[list[Ingredients]] = None
             contributors: Optional[list[Contributor]] = None
 

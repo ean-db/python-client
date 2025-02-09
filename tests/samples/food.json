@@ -24,7 +24,7 @@
           }
         },
         "manufacturerCode": "TEST",
-        "color": "blue"
+        "colors": ["blue"]
       },
       "food": {
         "nutrimentsPer100Grams": {
