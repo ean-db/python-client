@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "eandb"
-version = "0.6.0"
+version = "0.7.0"
 description = "Python client for EAN-DB API"
 authors = ["EAN-DB <support@ean-db.com>"]
 license = "MIT"
