@@ -2,6 +2,10 @@
   "balance": 100,
   "product": {
     "barcode": "123",
+    "barcodeDetails": {
+      "type": "EAN13",
+      "description": "Barcode"
+    },
     "titles": {
       "en": "Test"
     },
@@ -24,7 +28,11 @@
           }
         },
         "manufacturerCode": "TEST",
-        "colors": ["blue"]
+        "colors": [
+          {
+            "baseColor": "blue"
+          }
+        ]
       },
       "food": {
         "nutrimentsPer100Grams": {

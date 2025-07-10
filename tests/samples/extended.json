@@ -2,6 +2,10 @@
   "balance": 100,
   "product": {
     "barcode": "123",
+    "barcodeDetails": {
+      "type": "EAN13",
+      "description": "Barcode"
+    },
     "titles": {
       "en": "Test",
       "no": "Tœst"
@@ -42,7 +46,9 @@
     "images": [
       {
         "url": "https://ean-db.com/image.jpg",
-        "isCatalog": true
+        "isCatalog": true,
+        "height": 500,
+        "width": 500
       }
     ],
     "metadata": {

@@ -65,6 +65,11 @@ class DimensionsType(BaseModel):
 
 
 class Product(BaseModel):
+    class BarcodeDetails(BaseModel):
+        type: str
+        description: str
+        country: Optional[str] = None
+
     class Category(BaseModel):
         id: str
         titles: dict[str, str]
@@ -77,20 +82,21 @@ class Product(BaseModel):
     class Image(BaseModel):
         url: str
         isCatalog: bool
+        width: int
+        height: int
 
     class Metadata(BaseModel):
         class ExternalIds(BaseModel):
             amazonAsin: Optional[str]
 
         class Generic(BaseModel):
+            class Color(BaseModel):
+                baseColor: str
+                shade: Optional[str] = None
+
             class Contributor(BaseModel):
                 names: dict[str, str]
                 type: str
-
-            class Weight(BaseModel):
-                net: Optional[Amount] = None
-                gross: Optional[Amount] = None
-                unknown: Optional[Amount] = None
 
             class Dimensions(BaseModel):
                 product: Optional[DimensionsType] = None
@@ -110,24 +116,38 @@ class Product(BaseModel):
                 groupName: Optional[str]
                 ingredientsGroup: list[Ingredient]
 
-            weight: Optional[Weight] = None
-            dimensions: Optional[Dimensions] = None
-            volume: Optional[Amount] = None
-            manufacturerCode: Optional[str] = None
-            colors: Optional[list[str]] = None
-            ingredients: Optional[list[Ingredients]] = None
+            class Weight(BaseModel):
+                net: Optional[Amount] = None
+                gross: Optional[Amount] = None
+                unknown: Optional[Amount] = None
+
+            ageGroups: Optional[list[str]] = None
+            colors: Optional[list[Color]] = None
             contributors: Optional[list[Contributor]] = None
+            dimensions: Optional[Dimensions] = None
+            ingredients: Optional[list[Ingredients]] = None
+            manufacturerCode: Optional[str] = None
+            power: Optional[Amount] = None
+            volume: Optional[Amount] = None
+            weight: Optional[Weight] = None
 
         class Food(BaseModel):
             class Nutriments(BaseModel):
+                energy: Optional[Amount] = None
                 fat: Optional[Amount] = None
+                saturatedFat: Optional[Amount] = None
+                transFat: Optional[Amount] = None
                 proteins: Optional[Amount] = None
                 carbohydrates: Optional[Amount] = None
-                energy: Optional[Amount] = None
+                fiber: Optional[Amount] = None
+                totalSugars: Optional[Amount] = None
+                addedSugars: Optional[Amount] = None
                 cholesterol: Optional[Amount] = None
                 sodium: Optional[Amount] = None
                 potassium: Optional[Amount] = None
                 calcium: Optional[Amount] = None
+                iron: Optional[Amount] = None
+                vitaminD: Optional[Amount] = None
 
             nutrimentsPer100Grams: Optional[Nutriments]
 
@@ -150,6 +170,7 @@ class Product(BaseModel):
         media: Optional[Media] = None
 
     barcode: str
+    barcodeDetails: BarcodeDetails
     titles: dict[str, str]
     categories: list[Category]
     manufacturer: Optional[Manufacturer]

@@ -94,7 +94,7 @@ def _check_product_with_food_metadata(product_response: ProductResponse):
     assert product_response.product.metadata.generic.weight.unknown.equals.value == 100
     assert product_response.product.metadata.generic.weight.unknown.equals.unit == 'grams'
     assert product_response.product.metadata.generic.manufacturerCode == 'TEST'
-    assert product_response.product.metadata.generic.colors == ['blue']
+    assert product_response.product.metadata.generic.colors[0].baseColor == 'blue'
     assert isinstance(product_response.product.metadata.food, Product.Metadata.Food)
     assert isinstance(product_response.product.metadata.food.nutrimentsPer100Grams, Product.Metadata.Food.Nutriments)
     assert product_response.product.metadata.food.nutrimentsPer100Grams.fat.equals.value == 1.0

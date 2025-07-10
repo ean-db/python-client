@@ -2,6 +2,10 @@
   "balance": 100,
   "product": {
     "barcode": "123",
+    "barcodeDetails": {
+      "type": "EAN13",
+      "description": "Barcode"
+    },
     "titles": {
       "ru": "Ice Tea"
     },
@@ -37,7 +41,9 @@
     "images": [
       {
         "url": "https://ean-db.b-cdn.net/some_image.jpg",
-        "isCatalog": true
+        "isCatalog": true,
+        "width": 400,
+        "height": 400
       }
     ],
     "metadata": {

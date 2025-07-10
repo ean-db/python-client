@@ -45,17 +45,9 @@ ProductResponse(
         relatedBrands=[],
         images=[Image(url='...')], 
         metadata=Metadata(
-            externalIds=None,
             generic=Generic(
-                weight=None,
-                manufacturerCode=None,
-                color=None,
-                ingredients=None,
                 contributors=[Contributor(names={'en': "Guns N' Roses"}, type='artist')]
-            ),
-            food=None,
-            printBook=None,
-            musicCD=None
+            )
         )
     )
 )
