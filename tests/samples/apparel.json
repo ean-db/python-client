@@ -14,12 +14,18 @@
     "relatedBrands": [],
     "images": [],
     "metadata": {
-      "musicCD": {
-        "numberOfDiscs": 2,
-        "testUnknownPropery": "test"
+      "apparel": {
+        "sizes": [
+          {
+            "equals": {
+              "value": "M",
+              "unit": "size_label"
+            }
+          }
+        ]
       },
-      "media": {
-        "publicationYear": 2010
+      "generic": {
+        "genderFit": "male"
       }
     }
   }

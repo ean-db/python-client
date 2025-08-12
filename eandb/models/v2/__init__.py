@@ -1,5 +1,4 @@
 import enum
-from decimal import Decimal
 from typing import Optional
 
 from pydantic import BaseModel
@@ -47,21 +46,21 @@ class EandbResponse(BaseModel):
         return None
 
 
-class Amount(BaseModel):
-    class AmountValue(BaseModel):
-        value: Decimal
+class Measurement(BaseModel):
+    class MeasurementValue(BaseModel):
+        value: str
         unit: str
 
-    equals: Optional[AmountValue] = None
-    greaterThan: Optional[AmountValue] = None
-    lessThan: Optional[AmountValue] = None
+    equals: Optional[MeasurementValue] = None
+    greaterThan: Optional[MeasurementValue] = None
+    lessThan: Optional[MeasurementValue] = None
 
 
 class DimensionsType(BaseModel):
-    width: Optional[Amount] = None
-    height: Optional[Amount] = None
-    length: Optional[Amount] = None
-    depth: Optional[Amount] = None
+    width: Optional[Measurement] = None
+    height: Optional[Measurement] = None
+    length: Optional[Measurement] = None
+    depth: Optional[Measurement] = None
 
 
 class Product(BaseModel):
@@ -86,6 +85,9 @@ class Product(BaseModel):
         height: int
 
     class Metadata(BaseModel):
+        class Apparel(BaseModel):
+            sizes: Optional[list[Measurement]]
+
         class ExternalIds(BaseModel):
             amazonAsin: Optional[str]
 
@@ -108,7 +110,7 @@ class Product(BaseModel):
                     id: Optional[str] = None
                     canonicalNames: Optional[dict[str, str]] = None
                     properties: Optional[dict[str, list[str]]] = None
-                    amount: Optional[Amount] = None
+                    amount: Optional[Measurement] = None
                     isVegan: Optional[bool] = None
                     isVegetarian: Optional[bool] = None
                     subIngredients: Optional[list['Product.Metadata.Generic.Ingredients.Ingredient']] = None
@@ -117,37 +119,39 @@ class Product(BaseModel):
                 ingredientsGroup: list[Ingredient]
 
             class Weight(BaseModel):
-                net: Optional[Amount] = None
-                gross: Optional[Amount] = None
-                unknown: Optional[Amount] = None
+                net: Optional[Measurement] = None
+                gross: Optional[Measurement] = None
+                unknown: Optional[Measurement] = None
 
             ageGroups: Optional[list[str]] = None
             colors: Optional[list[Color]] = None
             contributors: Optional[list[Contributor]] = None
             dimensions: Optional[Dimensions] = None
+            genderFit: Optional[str] = None
             ingredients: Optional[list[Ingredients]] = None
             manufacturerCode: Optional[str] = None
-            power: Optional[Amount] = None
-            volume: Optional[Amount] = None
+            numberOfItems: Optional[Measurement] = None
+            power: Optional[Measurement] = None
+            volume: Optional[Measurement] = None
             weight: Optional[Weight] = None
 
         class Food(BaseModel):
             class Nutriments(BaseModel):
-                energy: Optional[Amount] = None
-                fat: Optional[Amount] = None
-                saturatedFat: Optional[Amount] = None
-                transFat: Optional[Amount] = None
-                proteins: Optional[Amount] = None
-                carbohydrates: Optional[Amount] = None
-                fiber: Optional[Amount] = None
-                totalSugars: Optional[Amount] = None
-                addedSugars: Optional[Amount] = None
-                cholesterol: Optional[Amount] = None
-                sodium: Optional[Amount] = None
-                potassium: Optional[Amount] = None
-                calcium: Optional[Amount] = None
-                iron: Optional[Amount] = None
-                vitaminD: Optional[Amount] = None
+                energy: Optional[Measurement] = None
+                fat: Optional[Measurement] = None
+                saturatedFat: Optional[Measurement] = None
+                transFat: Optional[Measurement] = None
+                proteins: Optional[Measurement] = None
+                carbohydrates: Optional[Measurement] = None
+                fiber: Optional[Measurement] = None
+                totalSugars: Optional[Measurement] = None
+                addedSugars: Optional[Measurement] = None
+                cholesterol: Optional[Measurement] = None
+                sodium: Optional[Measurement] = None
+                potassium: Optional[Measurement] = None
+                calcium: Optional[Measurement] = None
+                iron: Optional[Measurement] = None
+                vitaminD: Optional[Measurement] = None
 
             nutrimentsPer100Grams: Optional[Nutriments]
 
@@ -156,17 +160,14 @@ class Product(BaseModel):
             bisacCodes: Optional[list[str]] = None
             bindingType: Optional[str] = None
 
-        class MusicCD(BaseModel):
-            numberOfDiscs: Optional[int] = None
-
         class Media(BaseModel):
             publicationYear: Optional[int] = None
 
+        apparel: Optional[Apparel] = None
         externalIds: Optional[ExternalIds] = None
         generic: Optional[Generic] = None
         food: Optional[Food] = None
         printBook: Optional[PrintBook] = None
-        musicCD: Optional[MusicCD] = None
         media: Optional[Media] = None
 
     barcode: str

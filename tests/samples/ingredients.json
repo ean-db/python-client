@@ -66,7 +66,7 @@
                 "subIngredients": [],
                 "amount": {
                   "equals": {
-                    "value": 2.2,
+                    "value": "2.2",
                     "unit": "percent"
                   }
                 }
@@ -104,25 +104,25 @@
         "nutrimentsPer100Grams": {
           "fat": {
             "equals": {
-              "value": 0.0,
+              "value": "0",
               "unit": "grams"
             }
           },
           "proteins": {
             "equals": {
-              "value": 0.0,
+              "value": "0",
               "unit": "grams"
             }
           },
           "carbohydrates": {
             "equals": {
-              "value": 6.5,
+              "value": "6.5",
               "unit": "grams"
             }
           },
           "energy": {
             "equals": {
-              "value": 27.0,
+              "value": "27",
               "unit": "kcal"
             }
           }

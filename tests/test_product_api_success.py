@@ -1,18 +1,18 @@
 import json
-from decimal import Decimal
 
 import pytest
 from pytest_httpx import HTTPXMock
 
 from eandb.clients.v2 import EandbV2SyncClient, EandbV2AsyncClient
-from eandb.models.v2 import ProductResponse, Product
+from eandb.models.v2 import ProductResponse, Product, Measurement
 
 _MOCK_RESPONSES = {
     'BASIC_PRODUCT': json.load(open('tests/samples/basic.json')),
     'EXTENDED_PRODUCT': json.load(open('tests/samples/extended.json')),
     'PRODUCT_WITH_FOOD_METADATA': json.load(open('tests/samples/food.json')),
     'PRODUCT_WITH_BOOK_METADATA': json.load(open('tests/samples/book.json')),
-    'PRODUCT_WITH_MUSIC_CD_METADATA': json.load(open('tests/samples/musicCD.json')),
+    'PRODUCT_WITH_MEDIA_METADATA': json.load(open('tests/samples/media.json')),
+    'PRODUCT_WITH_APPAREL_METADATA': json.load(open('tests/samples/apparel.json')),
     'PRODUCT_WITH_INGREDIENTS_METADATA': json.load(open('tests/samples/ingredients.json'))
 }
 
@@ -73,7 +73,6 @@ def _check_extended_product(product_response: ProductResponse):
     assert product_response.product.metadata.generic is None
     assert product_response.product.metadata.food is None
     assert product_response.product.metadata.printBook is None
-    assert product_response.product.metadata.musicCD is None
     assert isinstance(product_response.product.metadata.externalIds, Product.Metadata.ExternalIds)
     assert product_response.product.metadata.externalIds.amazonAsin == 'TEST'
 
@@ -88,23 +87,22 @@ def _check_product_with_food_metadata(product_response: ProductResponse):
     assert isinstance(product_response.product.metadata, Product.Metadata)
     assert product_response.product.metadata.externalIds is None
     assert product_response.product.metadata.printBook is None
-    assert product_response.product.metadata.musicCD is None
     assert isinstance(product_response.product.metadata.generic, Product.Metadata.Generic)
     assert product_response.product.metadata.generic.weight.unknown is not None
-    assert product_response.product.metadata.generic.weight.unknown.equals.value == 100
+    assert product_response.product.metadata.generic.weight.unknown.equals.value == '100'
     assert product_response.product.metadata.generic.weight.unknown.equals.unit == 'grams'
     assert product_response.product.metadata.generic.manufacturerCode == 'TEST'
     assert product_response.product.metadata.generic.colors[0].baseColor == 'blue'
     assert isinstance(product_response.product.metadata.food, Product.Metadata.Food)
     assert isinstance(product_response.product.metadata.food.nutrimentsPer100Grams, Product.Metadata.Food.Nutriments)
-    assert product_response.product.metadata.food.nutrimentsPer100Grams.fat.equals.value == 1.0
-    assert product_response.product.metadata.food.nutrimentsPer100Grams.proteins.equals.value == 2.0
-    assert product_response.product.metadata.food.nutrimentsPer100Grams.carbohydrates.equals.value == 3.0
-    assert product_response.product.metadata.food.nutrimentsPer100Grams.energy.equals.value == 4.0
+    assert product_response.product.metadata.food.nutrimentsPer100Grams.fat.equals.value == '1'
+    assert product_response.product.metadata.food.nutrimentsPer100Grams.proteins.equals.value == '2'
+    assert product_response.product.metadata.food.nutrimentsPer100Grams.carbohydrates.equals.value == '3'
+    assert product_response.product.metadata.food.nutrimentsPer100Grams.energy.equals.value == '4'
     assert product_response.product.metadata.food.nutrimentsPer100Grams.cholesterol is None
     assert product_response.product.metadata.food.nutrimentsPer100Grams.sodium is None
     assert product_response.product.metadata.food.nutrimentsPer100Grams.potassium is None
-    assert product_response.product.metadata.food.nutrimentsPer100Grams.calcium.equals.value == 16.0
+    assert product_response.product.metadata.food.nutrimentsPer100Grams.calcium.equals.value == '16'
 
 
 def _check_product_with_book_metadata(product_response: ProductResponse):
@@ -113,7 +111,6 @@ def _check_product_with_book_metadata(product_response: ProductResponse):
     assert isinstance(product_response.product.metadata, Product.Metadata)
     assert product_response.product.metadata.externalIds is None
     assert product_response.product.metadata.food is None
-    assert product_response.product.metadata.musicCD is None
     assert isinstance(product_response.product.metadata.generic, Product.Metadata.Generic)
     assert product_response.product.metadata.generic.ingredients[0].groupName is None
     assert product_response.product.metadata.generic.ingredients[0].ingredientsGroup[0].id == 'paper'
@@ -128,17 +125,33 @@ def _check_product_with_book_metadata(product_response: ProductResponse):
     assert product_response.product.metadata.media.publicationYear == 2010
 
 
-def _check_product_with_music_cd_metadata(product_response: ProductResponse):
+def _check_product_with_media_metadata(product_response: ProductResponse):
     _check_common_success(product_response)
 
     assert isinstance(product_response.product.metadata, Product.Metadata)
     assert product_response.product.metadata.externalIds is None
-    assert product_response.product.metadata.generic is None
     assert product_response.product.metadata.food is None
     assert product_response.product.metadata.printBook is None
-    assert isinstance(product_response.product.metadata.musicCD, Product.Metadata.MusicCD)
-    assert product_response.product.metadata.musicCD.numberOfDiscs == 2
+    assert isinstance(product_response.product.metadata.media, Product.Metadata.Media)
     assert product_response.product.metadata.media.publicationYear == 2010
+    assert isinstance(product_response.product.metadata.generic.numberOfItems, Measurement)
+    assert product_response.product.metadata.generic.numberOfItems.equals.value == '2'
+    assert product_response.product.metadata.generic.numberOfItems.equals.unit == 'pcs'
+
+
+def _check_product_with_apparel_metadata(product_response: ProductResponse):
+    _check_common_success(product_response)
+
+    assert isinstance(product_response.product.metadata, Product.Metadata)
+    assert product_response.product.metadata.externalIds is None
+    assert product_response.product.metadata.food is None
+    assert product_response.product.metadata.media is None
+    assert product_response.product.metadata.printBook is None
+    assert product_response.product.metadata.generic.genderFit == 'male'
+    assert isinstance(product_response.product.metadata.apparel, Product.Metadata.Apparel)
+    assert isinstance(product_response.product.metadata.apparel.sizes[0], Measurement)
+    assert product_response.product.metadata.apparel.sizes[0].equals.value == 'M'
+    assert product_response.product.metadata.apparel.sizes[0].equals.unit == 'size_label'
 
 
 def _check_product_with_ingredients_metadata(product_response: ProductResponse):
@@ -154,7 +167,7 @@ def _check_product_with_ingredients_metadata(product_response: ProductResponse):
     assert ingredients.ingredientsGroup[0].originalNames == {'en': 'Drinking Water'}
     assert ingredients.ingredientsGroup[1].id == 'sugar'
     assert ingredients.ingredientsGroup[1].originalNames == {'en': 'Sugar'}
-    assert ingredients.ingredientsGroup[1].amount.equals.value == Decimal('2.2')
+    assert ingredients.ingredientsGroup[1].amount.equals.value == '2.2'
     assert ingredients.ingredientsGroup[1].amount.equals.unit == 'percent'
     assert ingredients.ingredientsGroup[2].originalNames == {'en': 'Acidity Regulators'}
     assert ingredients.ingredientsGroup[2].subIngredients[0].id == 'e330'
@@ -251,23 +264,42 @@ async def test_product_with_book_metadata_async(httpx_mock: HTTPXMock):
     _check_product_with_book_metadata(product_response)
 
 
-def test_product_with_music_cd_metadata_sync(httpx_mock: HTTPXMock):
-    _set_mock(httpx_mock, 'PRODUCT_WITH_MUSIC_CD_METADATA')
+def test_product_with_media_metadata_sync(httpx_mock: HTTPXMock):
+    _set_mock(httpx_mock, 'PRODUCT_WITH_MEDIA_METADATA')
 
     with EandbV2SyncClient(jwt='TEST') as client:
         product_response = client.get_product('123')
 
-    _check_product_with_music_cd_metadata(product_response)
+    _check_product_with_media_metadata(product_response)
 
 
 @pytest.mark.asyncio
-async def test_product_with_music_cd_metadata_async(httpx_mock: HTTPXMock):
-    _set_mock(httpx_mock, 'PRODUCT_WITH_MUSIC_CD_METADATA')
+async def test_product_with_media_metadata_async(httpx_mock: HTTPXMock):
+    _set_mock(httpx_mock, 'PRODUCT_WITH_MEDIA_METADATA')
 
     async with EandbV2AsyncClient(jwt='TEST') as client:
         product_response = await client.get_product('123')
 
-    _check_product_with_music_cd_metadata(product_response)
+    _check_product_with_media_metadata(product_response)
+
+
+def test_product_with_apparel_metadata_sync(httpx_mock: HTTPXMock):
+    _set_mock(httpx_mock, 'PRODUCT_WITH_APPAREL_METADATA')
+
+    with EandbV2SyncClient(jwt='TEST') as client:
+        product_response = client.get_product('123')
+
+    _check_product_with_apparel_metadata(product_response)
+
+
+@pytest.mark.asyncio
+async def test_product_with_apparel_metadata_async(httpx_mock: HTTPXMock):
+    _set_mock(httpx_mock, 'PRODUCT_WITH_APPAREL_METADATA')
+
+    async with EandbV2AsyncClient(jwt='TEST') as client:
+        product_response = await client.get_product('123')
+
+    _check_product_with_apparel_metadata(product_response)
 
 
 def test_product_with_ingredients_metadata_sync(httpx_mock: HTTPXMock):

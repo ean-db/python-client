@@ -1,0 +1,30 @@
+{
+  "balance": 100,
+  "product": {
+    "barcode": "123",
+    "barcodeDetails": {
+      "type": "EAN13",
+      "description": "Barcode"
+    },
+    "titles": {
+      "en": "Test"
+    },
+    "categories": [],
+    "manufacturer": null,
+    "relatedBrands": [],
+    "images": [],
+    "metadata": {
+      "generic": {
+        "numberOfItems": {
+          "equals": {
+            "value": "2",
+            "unit": "pcs"
+          }
+        }
+      },
+      "media": {
+        "publicationYear": 2010
+      }
+    }
+  }
+}

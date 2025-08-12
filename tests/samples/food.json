@@ -22,7 +22,7 @@
         "weight": {
           "unknown": {
             "equals": {
-              "value": 100,
+              "value": "100",
               "unit": "grams"
             }
           }
@@ -38,31 +38,31 @@
         "nutrimentsPer100Grams": {
           "fat": {
             "equals": {
-              "value": 1.0,
+              "value": "1",
               "unit": "grams"
             }
           },
           "proteins": {
             "equals": {
-              "value": 2.0,
+              "value": "2",
               "unit": "grams"
             }
           },
           "carbohydrates": {
             "equals": {
-              "value": 3.0,
+              "value": "3",
               "unit": "grams"
             }
           },
           "energy": {
             "equals": {
-              "value": 4.0,
+              "value": "4",
               "unit": "kcal"
             }
           },
           "calcium": {
             "equals": {
-              "value": 16.0,
+              "value": "16",
               "unit": "mg"
             }
           }

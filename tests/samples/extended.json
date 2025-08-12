@@ -53,7 +53,8 @@
     ],
     "metadata": {
       "externalIds": {
-        "amazonAsin": "TEST"
+        "amazonAsin": "TEST",
+        "testUnknownPropery": "test"
       }
     }
   }
