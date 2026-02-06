@@ -10,6 +10,7 @@ _MOCK_RESPONSES = {
     'BASIC_PRODUCT': json.load(open('tests/samples/basic.json')),
     'EXTENDED_PRODUCT': json.load(open('tests/samples/extended.json')),
     'PRODUCT_WITH_FOOD_METADATA': json.load(open('tests/samples/food.json')),
+    'PRODUCT_WITH_ELECTRIC_METADATA': json.load(open('tests/samples/electric.json')),
     'PRODUCT_WITH_BOOK_METADATA': json.load(open('tests/samples/book.json')),
     'PRODUCT_WITH_MEDIA_METADATA': json.load(open('tests/samples/media.json')),
     'PRODUCT_WITH_APPAREL_METADATA': json.load(open('tests/samples/apparel.json')),
@@ -109,18 +110,22 @@ def _check_product_with_book_metadata(product_response: ProductResponse):
     _check_common_success(product_response)
 
     assert isinstance(product_response.product.metadata, Product.Metadata)
-    assert product_response.product.metadata.externalIds is None
     assert product_response.product.metadata.food is None
+
+    assert isinstance(product_response.product.metadata.externalIds, Product.Metadata.ExternalIds)
+    assert product_response.product.metadata.externalIds.bisacCodes == ['TEST']
+
     assert isinstance(product_response.product.metadata.generic, Product.Metadata.Generic)
     assert product_response.product.metadata.generic.ingredients[0].groupName is None
     assert product_response.product.metadata.generic.ingredients[0].ingredientsGroup[0].id == 'paper'
     assert product_response.product.metadata.generic.ingredients[0].ingredientsGroup[0].originalNames == {'en': 'Paper'}
+
     assert isinstance(product_response.product.metadata.generic.contributors[0], Product.Metadata.Generic.Contributor)
     assert product_response.product.metadata.generic.contributors[0].names == {'en': 'John Smith'}
     assert product_response.product.metadata.generic.contributors[0].type == 'author'
+
     assert isinstance(product_response.product.metadata.printBook, Product.Metadata.PrintBook)
     assert product_response.product.metadata.printBook.numPages == 123
-    assert product_response.product.metadata.printBook.bisacCodes == ['TEST']
     assert product_response.product.metadata.printBook.bindingType == 'paperback'
     assert product_response.product.metadata.media.publicationYear == 2010
 
@@ -174,6 +179,28 @@ def _check_product_with_ingredients_metadata(product_response: ProductResponse):
     assert ingredients.ingredientsGroup[2].subIngredients[0].isVegan
     assert ingredients.ingredientsGroup[2].subIngredients[0].isVegetarian
     assert ingredients.ingredientsGroup[2].subIngredients[0].originalNames == {'en': 'Citric Acid'}
+
+
+def _check_product_with_electric_metadata(product_response: ProductResponse):
+    _check_common_success(product_response)
+
+    assert isinstance(product_response.product.metadata.electric, Product.Metadata.Electric)
+
+    electric_metadata = product_response.product.metadata.electric
+
+    assert electric_metadata.batteryCapacity.nominal.equals.value == '3000'
+    assert electric_metadata.batteryCapacity.nominal.equals.unit == 'mAh'
+    assert electric_metadata.batteryCapacity.energy.equals.value == '11.1'
+    assert electric_metadata.batteryCapacity.energy.equals.unit == 'Wh'
+    assert electric_metadata.batteryChemistry == 'Lithium-Ion'
+    assert electric_metadata.batterySize == 'AAA'
+    assert electric_metadata.voltage.nominal.equals.value == '1.2'
+    assert electric_metadata.voltage.nominal.equals.unit == 'volt'
+    assert electric_metadata.voltage.operational.greaterThan.value == '1'
+    assert electric_metadata.voltage.operational.greaterThan.unit == 'volt'
+    assert electric_metadata.voltage.operational.lessThan.value == '1.5'
+    assert electric_metadata.voltage.operational.lessThan.unit == 'volt'
+    assert electric_metadata.voltage.input is None
 
 
 def test_basic_product_sync(httpx_mock: HTTPXMock):
@@ -243,6 +270,25 @@ async def test_product_with_food_metadata_async(httpx_mock: HTTPXMock):
         product_response = await client.get_product('123')
 
     _check_product_with_food_metadata(product_response)
+
+
+def test_product_with_electric_metadata_sync(httpx_mock: HTTPXMock):
+    _set_mock(httpx_mock, 'PRODUCT_WITH_ELECTRIC_METADATA')
+
+    with EandbV2SyncClient(jwt='TEST') as client:
+        product_response = client.get_product('123')
+
+    _check_product_with_electric_metadata(product_response)
+
+
+@pytest.mark.asyncio
+async def test_product_with_electric_metadata_async(httpx_mock: HTTPXMock):
+    _set_mock(httpx_mock, 'PRODUCT_WITH_ELECTRIC_METADATA')
+
+    async with EandbV2AsyncClient(jwt='TEST') as client:
+        product_response = await client.get_product('123')
+
+    _check_product_with_electric_metadata(product_response)
 
 
 def test_product_with_book_metadata_sync(httpx_mock: HTTPXMock):

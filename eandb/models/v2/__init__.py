@@ -88,8 +88,24 @@ class Product(BaseModel):
         class Apparel(BaseModel):
             sizes: Optional[list[Measurement]]
 
+        class Electric(BaseModel):
+            class BatteryCapacity(BaseModel):
+                energy: Optional[Measurement] = None
+                nominal: Optional[Measurement] = None
+
+            class Voltage(BaseModel):
+                input: Optional[Measurement] = None
+                nominal: Optional[Measurement] = None
+                operational: Optional[Measurement] = None
+
+            batteryCapacity: Optional[BatteryCapacity]
+            batteryChemistry: Optional[str]
+            batterySize: Optional[str]
+            voltage: Optional[Voltage]
+
         class ExternalIds(BaseModel):
-            amazonAsin: Optional[str]
+            amazonAsin: Optional[str] = None
+            bisacCodes: Optional[list[str]] = None
 
         class Generic(BaseModel):
             class Color(BaseModel):
@@ -123,7 +139,6 @@ class Product(BaseModel):
                 gross: Optional[Measurement] = None
                 unknown: Optional[Measurement] = None
 
-            ageGroups: Optional[list[str]] = None
             colors: Optional[list[Color]] = None
             contributors: Optional[list[Contributor]] = None
             dimensions: Optional[Dimensions] = None
@@ -132,6 +147,7 @@ class Product(BaseModel):
             manufacturerCode: Optional[str] = None
             numberOfItems: Optional[Measurement] = None
             power: Optional[Measurement] = None
+            recommendedAge: Optional[Measurement] = None
             volume: Optional[Measurement] = None
             weight: Optional[Weight] = None
 
@@ -157,13 +173,13 @@ class Product(BaseModel):
 
         class PrintBook(BaseModel):
             numPages: Optional[int] = None
-            bisacCodes: Optional[list[str]] = None
             bindingType: Optional[str] = None
 
         class Media(BaseModel):
             publicationYear: Optional[int] = None
 
         apparel: Optional[Apparel] = None
+        electric: Optional[Electric] = None
         externalIds: Optional[ExternalIds] = None
         generic: Optional[Generic] = None
         food: Optional[Food] = None

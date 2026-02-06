@@ -1,0 +1,55 @@
+{
+  "balance": 100,
+  "product": {
+    "barcode": "123",
+    "barcodeDetails": {
+      "type": "EAN13",
+      "description": "Barcode"
+    },
+    "titles": {
+      "en": "Test"
+    },
+    "categories": [],
+    "manufacturer": null,
+    "relatedBrands": [],
+    "images": [],
+    "metadata": {
+      "electric": {
+        "batteryCapacity": {
+          "nominal": {
+            "equals": {
+              "value": "3000",
+              "unit": "mAh"
+            }
+          },
+          "energy": {
+            "equals": {
+              "value": "11.1",
+              "unit": "Wh"
+            }
+          }
+        },
+        "batteryChemistry": "Lithium-Ion",
+        "batterySize": "AAA",
+        "voltage": {
+          "nominal": {
+            "equals": {
+              "value": "1.2",
+              "unit": "volt"
+            }
+          },
+          "operational": {
+            "greaterThan": {
+              "value": "1",
+              "unit": "volt"
+            },
+            "lessThan": {
+              "value": "1.5",
+              "unit": "volt"
+            }
+          }
+        }
+      }
+    }
+  }
+}
